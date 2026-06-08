@@ -302,7 +302,7 @@ this.respuestaCorrecta;
     "";
 
     setTimeout(()=>{
-
+        
         resultado.innerHTML = "";
 
         this.generarPregunta();
