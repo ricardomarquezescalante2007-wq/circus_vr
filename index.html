@@ -7,152 +7,111 @@
 
 <title>🎪 Circo Mágico VR</title>
 
-<link rel="stylesheet" href="css/style.css">
-
-<meta name="screen-orientation" content="landscape">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">
-
 <style>
 
-/* Mira central VR */
-#crosshair{
-    position:fixed;
-    top:50%;
-    left:50%;
-    transform:translate(-50%,-50%);
-    color:white;
-    font-size:40px;
-    font-weight:bold;
-    z-index:9999;
-    pointer-events:none;
-    text-shadow:0 0 10px black;
+body {
+    margin: 0;
+    overflow: hidden;
+    font-family: Arial;
 }
 
-/* Botón VR móvil */
-#mobileVR{
-    position:fixed;
-    bottom:20px;
-    right:20px;
-    z-index:9999;
-    padding:12px 20px;
-    border:none;
-    border-radius:10px;
-    background:#00aaff;
-    color:white;
-    font-size:16px;
-    cursor:pointer;
+/* MENÚ */
+#menu {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0,0,0,0.85);
+    color: white;
+    padding: 25px;
+    border-radius: 15px;
+    text-align: center;
+    z-index: 10;
+    width: 80%;
+    max-width: 400px;
+}
+
+/* BOTÓN */
+#startBtn {
+    margin-top: 15px;
+    padding: 12px 20px;
+    font-size: 18px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
 }
 
 /* HUD */
-#hud{
-    position:fixed;
-    top:10px;
-    left:10px;
-    z-index:9999;
-    background:rgba(0,0,0,.6);
-    color:white;
-    padding:10px;
-    border-radius:10px;
-    font-size:14px;
+#hud {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    color: white;
+    background: rgba(0,0,0,0.5);
+    padding: 10px;
+    border-radius: 8px;
+    z-index: 5;
 }
 
-/* Menú principal */
-#menu{
-    position:fixed;
-    top:50%;
-    left:50%;
-    transform:translate(-50%,-50%);
-    background:rgba(0,0,0,.85);
-    color:white;
-    padding:30px;
-    border-radius:20px;
-    text-align:center;
-    z-index:10000;
-    max-width:600px;
+/* BOTÓN VR */
+#mobileVR {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+    background: #00aaff;
+    color: white;
+    z-index: 5;
 }
 
-/* Botón iniciar */
-#startBtn{
-    margin-top:20px;
-    padding:15px 30px;
-    font-size:20px;
-    cursor:pointer;
-    border:none;
-    border-radius:10px;
-}
-
-/* aviso rotación */
-#rotateDevice{
-    position:fixed;
-    top:0;
-    left:0;
-    width:100%;
-    background:black;
-    color:white;
-    text-align:center;
-    padding:10px;
-    z-index:10001;
+/* MENSAJE */
+#mensaje {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0,0,0,0.7);
+    color: white;
+    padding: 10px 15px;
+    border-radius: 10px;
+    display: none;
+    z-index: 5;
 }
 
 </style>
+
 </head>
 
 <body>
 
-<!-- AVISO ROTACIÓN -->
-<div id="rotateDevice">
-🔄 Gira el teléfono a horizontal para jugar en VR
-</div>
-
-<!-- MENU -->
+<!-- MENÚ -->
 <div id="menu">
-
-    <h1>🎪 CIRCO MÁGICO VR 🎪</h1>
-
-    <p>
-        Bienvenido al circo mágico.<br><br>
-
-        Explora los minijuegos:<br><br>
-
-        🎩 Matemática Mágica<br>
-        🤡 Inglés con Pepito<br>
-        🤸 Acrobacia Estelar<br>
-        🃏 Memoria del Circo<br>
-        🎯 Lanzamiento de Aros<br>
-        🎨 Colores Mágicos<br><br>
-
-        <!-- FIX: fuera de <p> -->
-        <div id="tableroMemoria"></div>
-
-        ⌨️ Flechas + Enter<br>
-        🎮 Stick Izquierdo + Botón A<br><br>
-
-        📱 Compatible con VR Box<br>
-        🥽 Compatible con Cardboard
-    </p>
-
-    <button id="startBtn">COMENZAR AVENTURA</button>
+    <h1>🎪 CIRCO MÁGICO VR</h1>
+    <p>Presiona iniciar para entrar al circo</p>
+    <button id="startBtn">COMENZAR</button>
 </div>
 
 <!-- HUD -->
 <div id="hud">
-🎮 Xbox<br>
-⌨️ WASD + Mouse<br>
-🥽 VR PC<br>
-📱 VR Box / Cardboard
+🎮 WASD<br>
+🖱 Mouse<br>
+📱 Móvil compatible
 </div>
 
-<!-- BOTÓN VR -->
-<button id="mobileVR">📱 Entrar a VR Móvil</button>
+<!-- VR BUTTON -->
+<button id="mobileVR">📱 VR</button>
 
-<!-- MIRA -->
-<div id="crosshair">+</div>
+<!-- MENSAJE -->
+<div id="mensaje"></div>
 
-<!-- SCRIPTS -->
-<script type="module" src="./js/main.js"></script>
+<!-- THREE.JS (IMPORTANTE: ANTES DEL JS) -->
+<script src="https://cdn.jsdelivr.net/npm/three@0.165/build/three.min.js"></script>
 
-<script src="https://cdn.jsdelivr.net/npm/three@0.165/examples/js/effects/StereoEffect.js"></script>
+<!-- TU JUEGO -->
+<script src="./js/main.js"></script>
 
 </body>
+
 </html>
