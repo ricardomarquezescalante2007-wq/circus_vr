@@ -25,6 +25,9 @@ let juegoAros;
 let juegoAcrobacia;
 let cartelActivo = null;
 
+let effect;
+let vrMovil = false;
+
 let scene;
 let camera;
 let renderer;
@@ -62,10 +65,21 @@ function init(){
         1000
     );
 
-    renderer =
-    new THREE.WebGLRenderer({
-        antialias:true
-    });
+    renderer = new THREE.WebGLRenderer({
+    antialias:true
+});
+
+renderer.setSize(
+    window.innerWidth,
+    window.innerHeight
+);
+
+effect = new THREE.StereoEffect(renderer);
+
+effect.setSize(
+    window.innerWidth,
+    window.innerHeight
+);
 
     renderer.setSize(
         window.innerWidth,
@@ -891,10 +905,21 @@ if(modoVRMovil){
 
 }
 
+    if(vrMovil){
+
+    effect.render(
+        scene,
+        camera
+    );
+
+}else{
+
     renderer.render(
         scene,
         camera
     );
+
+}
 
     if(rueda){
 
@@ -931,20 +956,12 @@ function crearInterfaz(){
 }
 
 document
-.getElementById("startBtn")
-?.addEventListener("click", () => {
-
-    alert("Botón detectado");
-
-    const menu = document.getElementById("menu");
-
-    if(menu){
-        menu.style.display = "none";
-    }
-
-    const musica =
-document.getElementById(
-    "musica"
+.getElementById(
+    "mobileVR"
+)
+.addEventListener(
+    "click",
+    activarVRMovil
 );
 
 if(musica){
@@ -953,7 +970,6 @@ if(musica){
 
 }
 
-});
 
 function verificarCarteles(){
 
@@ -1085,3 +1101,63 @@ function activarVRMovil(){
     }
 
 }
+
+window.addEventListener(
+    "load",
+    verificarOrientacion
+);
+
+window.addEventListener(
+    "orientationchange",
+    verificarOrientacion
+);
+
+window.addEventListener(
+    "resize",
+    verificarOrientacion
+);
+
+function verificarOrientacion(){
+
+    if(
+        window.innerHeight >
+        window.innerWidth
+    ){
+
+        document.getElementById(
+            "rotateDevice"
+        ).style.display =
+        "flex";
+
+    }
+    else{
+
+        document.getElementById(
+            "rotateDevice"
+        ).style.display =
+        "none";
+
+    }
+
+}
+
+function activarVRMovil(){
+
+    vrMovil = !vrMovil;
+
+    if(vrMovil){
+
+        alert(
+            "🥽 Modo VR Box Activado"
+        );
+
+    }else{
+
+        alert(
+            "📱 Modo Normal"
+        );
+
+    }
+
+}
+
