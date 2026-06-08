@@ -147,6 +147,10 @@ href="css/style.css">
 
 </head>
 
+<div id="rotateDevice">
+    🔄 Gira el teléfono a horizontal para jugar en VR
+</div>
+
 <body>
 
 <!-- MENU PRINCIPAL -->
@@ -162,6 +166,7 @@ href="css/style.css">
 
         Bienvenido al circo mágico.
 
+
         Explora los minijuegos:
 
         <br><br>
@@ -176,18 +181,9 @@ href="css/style.css">
 
         🤸 Acrobacia Estelar
 
-        <h1>🃏 Memoria del Circo</h1>
-
-<p>
-⌨️ Flechas + Enter<br>
-🎮 Stick Izquierdo + Botón A
-</p>
-
-<h3 id="puntosMemoria">
-⭐ Parejas: 0 / 6
-</h3>
-
-<div id="tableroMemoria"></div>
+        <br>
+        🃏 Memoria del Circo
+        <br>
 
         🎯 Lanzamiento de Aros
 
@@ -196,6 +192,8 @@ href="css/style.css">
         🎨 Colores Mágicos
 
         <br>
+
+        <div id="tableroMemoria"></div>
 
         <p>
 ⌨️ Flechas + Enter<br>
@@ -243,9 +241,7 @@ href="css/style.css">
 <!-- BOTÓN VR MÓVIL -->
 
 <button id="mobileVR">
-
 📱 Entrar a VR Móvil
-
 </button>
 
 <!-- MIRA CENTRAL -->
@@ -256,10 +252,16 @@ href="css/style.css">
 
 </div>
 
+<meta name="screen-orientation" content="landscape">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+
 <!-- CARGA DEL JUEGO -->
 
 <script type="module"
 src="js/main.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/three@0.165/examples/js/effects/StereoEffect.js"></script>
 
 </body>
 
