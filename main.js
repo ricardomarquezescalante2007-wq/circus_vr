@@ -1,4 +1,3 @@
-import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.165/build/three.module.js";
 
 // ---------------- ESCENA ----------------
 let scene, camera, renderer;
@@ -7,19 +6,16 @@ let player;
 let menu, btn;
 let started = false;
 
-// ---------------- INICIO SEGURO ----------------
-window.addEventListener("DOMContentLoaded", init);
+// ---------------- INIT ----------------
+window.onload = function () {
 
-function init() {
+    console.log("JS cargado OK");
 
-    console.log("JS cargado correctamente");
-
-    // VALIDAR HTML
     menu = document.getElementById("menu");
     btn = document.getElementById("startBtn");
 
     if (!menu || !btn) {
-        alert("ERROR: No se encontró #menu o #startBtn");
+        alert("ERROR: Falta menu o startBtn");
         return;
     }
 
@@ -35,7 +31,7 @@ function init() {
         1000
     );
 
-    // RENDERER (BÁSICO Y SEGURO)
+    // RENDERER
     renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -53,16 +49,16 @@ function init() {
     const light = new THREE.AmbientLight(0xffffff, 1.5);
     scene.add(light);
 
-    // SUELO SIMPLE
+    // SUELO
     const floor = new THREE.Mesh(
-        new THREE.PlaneGeometry(50, 50),
+        new THREE.PlaneGeometry(100, 100),
         new THREE.MeshStandardMaterial({ color: 0x55aa55 })
     );
 
     floor.rotation.x = -Math.PI / 2;
     scene.add(floor);
 
-    // CUBO DE PRUEBA
+    // OBJETO DE PRUEBA (IMPORTANTE)
     const cube = new THREE.Mesh(
         new THREE.BoxGeometry(2, 2, 2),
         new THREE.MeshStandardMaterial({ color: 0xff0000 })
@@ -71,10 +67,10 @@ function init() {
     cube.position.set(0, 2, 0);
     scene.add(cube);
 
-    // BOTÓN START
-    btn.addEventListener("click", () => {
+    // BOTÓN INICIAR
+    btn.addEventListener("click", function () {
 
-        console.log("START PRESIONADO");
+        console.log("START");
 
         menu.style.display = "none";
         started = true;
@@ -83,7 +79,7 @@ function init() {
     });
 
     window.addEventListener("resize", resize);
-}
+};
 
 // ---------------- LOOP ----------------
 function animate() {
