@@ -71,3 +71,50 @@ border-radius:10px;
 z-index:100;
 
 }
+
+html,
+body{
+    margin:0;
+    padding:0;
+    width:100%;
+    height:100%;
+    overflow:hidden;
+}
+
+/* Fuerza el contenido a ocupar toda la pantalla */
+canvas{
+    display:block;
+}
+
+/* Mensaje cuando el teléfono está vertical */
+#rotateDevice{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:black;
+    color:white;
+    display:none;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    font-size:30px;
+    z-index:99999;
+}
+
+/* Si está en vertical */
+@media screen and (orientation: portrait){
+
+    #rotateDevice{
+        display:flex;
+    }
+
+    #menu,
+    #hud,
+    #mobileVR,
+    canvas{
+        display:none !important;
+    }
+
+}
