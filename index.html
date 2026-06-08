@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0, user-scalable=no">
+
+<title>🎪 Circo Mágico VR</title>
+
+<link rel="stylesheet"
+href="css/style.css">
+
+<style>
+
+/* Mira central para VR */
+
+#crosshair{
+
+    position:fixed;
+
+    top:50%;
+
+    left:50%;
+
+    transform:translate(-50%,-50%);
+
+    color:white;
+
+    font-size:40px;
+
+    font-weight:bold;
+
+    z-index:9999;
+
+    pointer-events:none;
+
+    text-shadow:
+    0 0 10px black;
+
+}
+
+/* Botón VR móvil */
+
+#mobileVR{
+
+    position:fixed;
+
+    bottom:20px;
+
+    right:20px;
+
+    z-index:9999;
+
+    padding:12px 20px;
+
+    border:none;
+
+    border-radius:10px;
+
+    background:#00aaff;
+
+    color:white;
+
+    font-size:16px;
+
+    cursor:pointer;
+
+}
+
+/* HUD */
+
+#hud{
+
+    position:fixed;
+
+    top:10px;
+
+    left:10px;
+
+    z-index:9999;
+
+    background:
+    rgba(0,0,0,.6);
+
+    color:white;
+
+    padding:10px;
+
+    border-radius:10px;
+
+    font-size:14px;
+
+}
+
+/* Menú principal */
+
+#menu{
+
+    position:fixed;
+
+    top:50%;
+
+    left:50%;
+
+    transform:
+    translate(-50%,-50%);
+
+    background:
+    rgba(0,0,0,.85);
+
+    color:white;
+
+    padding:30px;
+
+    border-radius:20px;
+
+    text-align:center;
+
+    z-index:10000;
+
+    max-width:600px;
+
+}
+
+/* Botón iniciar */
+
+#startBtn{
+
+    margin-top:20px;
+
+    padding:15px 30px;
+
+    font-size:20px;
+
+    cursor:pointer;
+
+    border:none;
+
+    border-radius:10px;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- MENU PRINCIPAL -->
+
+<div id="menu">
+
+    <h1>
+        🎪 CIRCO MÁGICO VR 🎪
+    </h1>
+
+    <h2>
+        Día Mundial del Circo
+    </h2>
+
+    <p>
+
+        Bienvenido al circo mágico.
+
+        Explora los minijuegos:
+
+        <br><br>
+
+        🎩 Matemática Mágica
+
+        <br>
+        <p>
+⌨️ Escribe la respuesta y presiona Enter<br>
+🎮 Xbox: usa el teclado virtual
+</p>
+
+        🤡 Inglés con Pepito
+
+        <br>
+        <p>
+⌨️ Escribe la respuesta y presiona Enter<br>
+🎮 Xbox: usa el teclado virtual del navegador
+</p>
+
+        🤸 Acrobacia Estelar
+
+        <h1>🃏 Memoria del Circo</h1>
+
+<p>
+⌨️ Flechas + Enter<br>
+🎮 Stick Izquierdo + Botón A
+</p>
+
+<h3 id="puntosMemoria">
+⭐ Parejas: 0 / 6
+</h3>
+
+<div id="tableroMemoria"></div>
+
+        🎯 Lanzamiento de Aros
+
+        <br>
+
+        🎨 Colores Mágicos
+
+        <br>
+
+        <p>
+⌨️ Flechas + Enter<br>
+🎮 Stick Izquierdo + Botón A
+</p>
+        
+        <br>
+
+        📱 Compatible con VR Box
+
+        <br>
+
+        🥽 Compatible con Cardboard
+
+    </p>
+
+    <button id="startBtn">
+
+        COMENZAR AVENTURA
+
+    </button>
+
+</div>
+
+<!-- HUD -->
+
+<div id="hud">
+
+🎮 Xbox
+
+<br>
+
+⌨️ WASD + Mouse
+
+<br>
+
+🥽 VR PC
+
+<br>
+
+📱 VR Box / Cardboard
+
+</div>
+
+<!-- BOTÓN VR MÓVIL -->
+
+<button id="mobileVR">
+
+📱 Entrar a VR Móvil
+
+</button>
+
+<!-- MIRA CENTRAL -->
+
+<div id="crosshair">
+
++
+
+</div>
+
+<!-- CARGA DEL JUEGO -->
+
+<script type="module"
+src="js/main.js"></script>
+
+</body>
+
+</html>
