@@ -1,5 +1,4 @@
 import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.165/build/three.module.js";
-import { VRButton } from "https://cdn.jsdelivr.net/npm/three@0.165/examples/jsm/webxr/VRButton.js";
 
 import { GestorMinijuegos } from "./minijuegos.js";
 import { MatematicaMagica } from "./matematicas.js";
@@ -9,30 +8,25 @@ import { ColoresMagicos } from "./colores.js";
 import { LanzamientoAros } from "./aros.js";
 import { AcrobaciaEstelar } from "./acrobacia.js";
 
-// -------------------- ESCENA --------------------
+// ---------------- VARIABLES ----------------
 let scene, camera, renderer;
 let player;
-
-let carteles = [];
-let estrellas = [];
-let rueda;
-
-let mensajeUI;
-let cartelActivo = null;
 
 let keys = {};
 let yaw = 0;
 let pitch = 0;
-
 let mouseEnabled = false;
 
-// minijuegos
-let gestor;
-let juegoMate, juegoIngles, juegoMemoria, juegoColores, juegoAros, juegoAcrobacia;
+let carteles = [];
+let cartelActivo = null;
 
-// -------------------- INIT --------------------
-init();
-animate();
+let mensajeUI;
+
+// minijuegos
+let gestor, juegoMate, juegoIngles, juegoMemoria, juegoColores, juegoAros, juegoAcrobacia;
+
+// ---------------- INICIO ----------------
+window.addEventListener("DOMContentLoaded", init);
 
 function init() {
 
@@ -48,13 +42,16 @@ function init() {
         1000
     );
 
-    // RENDER
-    renderer = new THREE.WebGLRenderer({ antialias: true });
+    // RENDERER (MÓVIL SEGURO)
+    renderer = new THREE.WebGLRenderer({
+        antialias: true,
+        powerPreference: "high-performance"
+    });
+
     renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.xr.enabled = true;
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
     document.body.appendChild(renderer.domElement);
-    document.body.appendChild(VRButton.createButton(renderer));
 
     // PLAYER
     player = new THREE.Group();
@@ -77,28 +74,24 @@ function init() {
     crearSuelo();
     crearCarpa();
     crearCarteles();
-    crearEstrellas();
-    crearRueda();
     crearUI();
 
     // CONTROLES
     configurarTeclado();
     configurarMouse();
 
-    // BOTONES
+    // BOTÓN START
     document.getElementById("startBtn").addEventListener("click", () => {
-        document.getElementById("menu").style.display = "none";
-        renderer.setAnimationLoop(render);
-    });
 
-    document.getElementById("mobileVR").addEventListener("click", () => {
-        alert("Modo VR móvil activado");
+        document.getElementById("menu").style.display = "none";
+
+        renderer.setAnimationLoop(render);
     });
 
     window.addEventListener("resize", resize);
 }
 
-// -------------------- LUCES --------------------
+// ---------------- LUCES ----------------
 function crearLuces() {
     scene.add(new THREE.AmbientLight(0xffffff, 2));
 
@@ -107,7 +100,7 @@ function crearLuces() {
     scene.add(dir);
 }
 
-// -------------------- SUELO --------------------
+// ---------------- SUELO ----------------
 function crearSuelo() {
     const suelo = new THREE.Mesh(
         new THREE.PlaneGeometry(300, 300),
@@ -118,8 +111,9 @@ function crearSuelo() {
     scene.add(suelo);
 }
 
-// -------------------- CARPA --------------------
+// ---------------- CARPA ----------------
 function crearCarpa() {
+
     const base = new THREE.Mesh(
         new THREE.CylinderGeometry(20, 20, 10, 64),
         new THREE.MeshStandardMaterial({ color: 0xff3333 })
@@ -139,26 +133,26 @@ function crearCarpa() {
     scene.add(grupo);
 }
 
-// -------------------- CARTEL --------------------
+// ---------------- CARTEL ----------------
 function crearCartel(emoji, titulo, x, z) {
 
     const canvas = document.createElement("canvas");
-    canvas.width = 1024;
-    canvas.height = 1024;
+    canvas.width = 512;
+    canvas.height = 512;
 
     const ctx = canvas.getContext("2d");
 
     ctx.fillStyle = "white";
-    ctx.fillRect(0, 0, 1024, 1024);
+    ctx.fillRect(0, 0, 512, 512);
 
     ctx.fillStyle = "black";
     ctx.textAlign = "center";
 
-    ctx.font = "bold 70px Arial";
-    ctx.fillText(titulo, 512, 150);
+    ctx.font = "bold 40px Arial";
+    ctx.fillText(titulo, 256, 80);
 
-    ctx.font = "300px Arial";
-    ctx.fillText(emoji, 512, 650);
+    ctx.font = "200px Arial";
+    ctx.fillText(emoji, 256, 300);
 
     const texture = new THREE.CanvasTexture(canvas);
 
@@ -182,57 +176,29 @@ function crearCarteles() {
     crearCartel("🎨", "Colores Mágicos", -35, 25);
 }
 
-// -------------------- ESTRELLAS --------------------
-function crearEstrellas() {
-    for (let i = 0; i < 200; i++) {
-        const estrella = new THREE.Mesh(
-            new THREE.SphereGeometry(0.15, 8, 8),
-            new THREE.MeshBasicMaterial({ color: 0xffffff })
-        );
-
-        estrella.position.set(
-            (Math.random() - 0.5) * 200,
-            Math.random() * 80 + 20,
-            (Math.random() - 0.5) * 200
-        );
-
-        estrellas.push(estrella);
-        scene.add(estrella);
-    }
-}
-
-// -------------------- RUEDA --------------------
-function crearRueda() {
-    rueda = new THREE.Mesh(
-        new THREE.TorusGeometry(8, 0.5, 16, 100),
-        new THREE.MeshStandardMaterial({ color: 0x00ffff })
-    );
-
-    rueda.position.set(40, 12, 0);
-    scene.add(rueda);
-}
-
-// -------------------- UI --------------------
+// ---------------- UI ----------------
 function crearUI() {
+
     mensajeUI = document.createElement("div");
     mensajeUI.style.position = "absolute";
     mensajeUI.style.bottom = "40px";
     mensajeUI.style.left = "50%";
     mensajeUI.style.transform = "translateX(-50%)";
-    mensajeUI.style.padding = "15px 25px";
-    mensajeUI.style.background = "rgba(0,0,0,0.8)";
+    mensajeUI.style.padding = "15px";
+    mensajeUI.style.background = "rgba(0,0,0,0.7)";
     mensajeUI.style.color = "white";
-    mensajeUI.style.fontSize = "20px";
+    mensajeUI.style.fontSize = "18px";
     mensajeUI.style.borderRadius = "10px";
     mensajeUI.style.display = "none";
 
     document.body.appendChild(mensajeUI);
 }
 
-// -------------------- CONTROLES --------------------
+// ---------------- CONTROLES ----------------
 function configurarTeclado() {
 
     window.addEventListener("keydown", e => {
+
         keys[e.key.toLowerCase()] = true;
 
         if (e.key.toLowerCase() === "e" && cartelActivo) {
@@ -247,14 +213,6 @@ function configurarTeclado() {
 
 function configurarMouse() {
 
-    document.body.addEventListener("click", () => {
-        document.body.requestPointerLock();
-    });
-
-    document.addEventListener("pointerlockchange", () => {
-        mouseEnabled = document.pointerLockElement === document.body;
-    });
-
     document.addEventListener("mousemove", e => {
         if (!mouseEnabled) return;
 
@@ -263,9 +221,17 @@ function configurarMouse() {
 
         pitch = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, pitch));
     });
+
+    document.body.addEventListener("click", () => {
+        document.body.requestPointerLock();
+    });
+
+    document.addEventListener("pointerlockchange", () => {
+        mouseEnabled = document.pointerLockElement === document.body;
+    });
 }
 
-// -------------------- MOVIMIENTO --------------------
+// ---------------- MOVIMIENTO ----------------
 function leerControles() {
 
     const speed = 0.3;
@@ -280,16 +246,16 @@ function leerControles() {
     camera.rotation.x = pitch;
 }
 
-// -------------------- LOGICA --------------------
+// ---------------- LOGICA ----------------
 function verificarCarteles() {
 
     cartelActivo = null;
 
     for (const c of carteles) {
 
-        const dist = player.position.distanceTo(c.objeto.position);
+        const d = player.position.distanceTo(c.objeto.position);
 
-        if (dist < 10) {
+        if (d < 10) {
             cartelActivo = c;
             break;
         }
@@ -303,6 +269,7 @@ function verificarCarteles() {
     }
 }
 
+// ---------------- MINIJUEGOS ----------------
 function abrirMinijuego(nombre) {
 
     switch (nombre) {
@@ -316,24 +283,20 @@ function abrirMinijuego(nombre) {
     }
 }
 
-// -------------------- LOOP --------------------
-function animate() {
-    renderer.setAnimationLoop(render);
-}
-
+// ---------------- LOOP ----------------
 function render() {
 
     leerControles();
     verificarCarteles();
 
-    if (rueda) rueda.rotation.z += 0.01;
-
     renderer.render(scene, camera);
 }
 
-// -------------------- RESIZE --------------------
+// ---------------- RESIZE ----------------
 function resize() {
+
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
+
     renderer.setSize(window.innerWidth, window.innerHeight);
 }
